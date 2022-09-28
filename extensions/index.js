@@ -1,13 +1,14 @@
-require('electron-debug')({ showDevTools: true })
-const { session } = require('electron')
+require("electron-debug")({ showDevTools: true });
+const { session } = require("electron");
 const path = require("path");
 const devtoolPaths = [
-  // 安装vue-devtools
-  "./vue3-devtools"
-]
+    // 安装vue-devtools
+    "./vue3-devtools",
+];
 module.exports = async function () {
-  return Promise.all(devtoolPaths.map(devtoolPath =>{
-      return session.defaultSession.loadExtension(path.join(__dirname, devtoolPath))
-    }
-  ))
-}
+    return Promise.all(
+        devtoolPaths.map(devtoolPath => {
+            return session.defaultSession.loadExtension(path.join(__dirname, devtoolPath));
+        })
+    );
+};

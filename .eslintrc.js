@@ -1,27 +1,28 @@
 module.exports = {
-    parser: "@typescript-eslint/parser",
+    parser: "vue-eslint-parser",
     parserOptions: {
+        parser: "@typescript-eslint/parser",
         ecmaVersion: "latest",
         ecmaFeatures: {
             ts: true,
             jsx: true,
-            experimentalObjectRestSpread: true
-        }
+            experimentalObjectRestSpread: true,
+        },
     },
     env: {
-        es6:true,
-        node:true,
+        es6: true,
+        node: true,
         browser: true,
-        commonjs: true
+        commonjs: true,
     },
     extends: [
         "plugin:vue/vue3-recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended"
+        "plugin:prettier/recommended",
     ],
     rules: {
         "no-var": "error",
         "no-empty": "warn",
-        "vue/multi-word-component-names": "off"
-    }
-}
+        "vue/multi-word-component-names": "off",
+    },
+};
