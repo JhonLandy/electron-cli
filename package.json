@@ -4,7 +4,8 @@
   "description": "桌面应用",
   "main": "main.js",
   "bin": {
-    "electron-start": "./script/vue-runner.js"
+    "electron-start": "./script/vue-runner.js",
+    "eslint": "eslint --format node_modules/eslint-friendly-formatter"
   },
   "scripts": {
     "start:electron": "electron .",
