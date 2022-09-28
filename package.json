@@ -4,8 +4,7 @@
   "description": "桌面应用",
   "main": "main.js",
   "bin": {
-    "electron-start": "./script/vue-runner.js",
-    "eslint": "eslint --format node_modules/eslint-friendly-formatter src/"
+    "electron-start": "./script/vue-runner.js"
   },
   "scripts": {
     "start:electron": "electron .",
@@ -88,8 +87,7 @@
   },
   "lint-staged": {
     "src/**/*.{vue,js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
+      "eslint --fix"
     ]
   }
 }
