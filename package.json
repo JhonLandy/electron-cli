@@ -5,7 +5,7 @@
   "main": "main.js",
   "bin": {
     "electron-start": "./script/vue-runner.js",
-    "eslint-friendly": "eslint --format node_modules/eslint-friendly-formatter src/"
+    "eslint": "eslint --format node_modules/eslint-friendly-formatter src/"
   },
   "scripts": {
     "start:electron": "electron .",
@@ -88,7 +88,7 @@
   },
   "lint-staged": {
     "src/**/*.{vue,js,jsx,ts,tsx}": [
-      "eslint-friendly --fix",
+      "eslint --fix",
       "prettier --write"
     ]
   }
