@@ -7,7 +7,7 @@ const { say } = require('cfonts')
 const { spawn } = require('child_process')
 const webpack = require('webpack')
 const WebpackDevServer = require('webpack-dev-server')
-const rendererConfig = require('../webpack.config')
+const rendererConfig = require('../build/webpack.dev.config')
 
 let electronProcess = null
 let manualRestart = false
