@@ -7,8 +7,11 @@ export default defineComponent({
     name: "App",
     data() {
         return {
-            message: 888911,
+            message: process.env.VUE_APP_ENV + "221",
         };
+    },
+    mounted() {
+        console.log(process.env.VUE_APP_ENV);
     },
 });
 </script>

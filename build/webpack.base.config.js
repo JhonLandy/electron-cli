@@ -86,7 +86,7 @@ module.exports = {
             title: 'myWebPackDemo',
             // favicon: './public/favicon.ico',
             template: './public/index.html',
-            filename: 'app.html',
+            filename: 'index.html',
             inject: true,
             minify: {
                 // 压缩HTML⽂件
@@ -102,9 +102,10 @@ module.exports = {
         }),
         new Dotenv({
             path: process.env.NODE_ENV === 'production'
-              ? path.join(__dirname, '../.env.production')
-              : path.join(__dirname, '../.env.development'),
-            allowEmptyValues: true
+              ? path.join(__dirname, './.env.pro')
+              : path.join(__dirname, './.env.dev'),
+            allowEmptyValues: true,
+            expand: true
         })
     ],
 }

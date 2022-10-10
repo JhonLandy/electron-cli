@@ -36,23 +36,17 @@ function logStats (proc, data) {
 
 function startRenderer () {
     return new Promise((resolve, reject) => {
-        rendererConfig.mode = 'development'
-        const compiler = webpack(rendererConfig)
+        const devServerConfig = rendererConfig.devServer
+        const webpackConfig = Object.assign({}, rendererConfig)
+        webpackConfig.devServer = void 0
+        const compiler = webpack(webpackConfig)
 
         compiler.hooks.done.tap('done', stats => {
             logStats('渲染', stats)
         })
 
-        const server = new WebpackDevServer(
-            {
-                host: "127.0.0.1",
-                // contentBase: path.join(__dirname, '../'),
-                hot: true,
-                historyApiFallback: true,
-            },
-            compiler
-        )
-        server.start(8081)
+        const server = new WebpackDevServer(devServerConfig, compiler)
+        // server.start(devServerConfig.port)
         server.startCallback(() => resolve())
     })
 }
