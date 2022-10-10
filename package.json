@@ -2,7 +2,7 @@
   "name": "ecletron-porject",
   "version": "1.0.0",
   "description": "桌面应用",
-  "main": "main.js",
+  "main": "./electron/main.js",
   "bin": {
     "electron-start": "./script/vue-runner.js",
     "eslint": "eslint --format node_modules/eslint-friendly-formatter"

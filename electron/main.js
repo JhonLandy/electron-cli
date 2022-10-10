@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require('electron')
-const devtoolInstall = require("./extensions")
-const { devServer }  = require("./build/webpack.dev.config")
+const devtoolInstall = require("../extensions")
+const { devServer }  = require("../build/webpack.dev.config")
 const isProduction = process.env.NODE_ENV === "production"
 // 保持一个对于 window 对象的全局引用，如果你不这样做，
 // 当 JavaScript 对象被垃圾回收， window 会被自动地关闭
