@@ -51,31 +51,26 @@ module.exports = {
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
-                use: [
-                    {
-                        'loader': 'url-loader',
-                        'options': {
-                            name: '[name].[ext]',
-                            outputPath: 'assets/font',
-                            limit: 3 * 1024,
-                            esModule: false
-                        }
-                    }
-                ]
+                type:"asset",
+                generator: {
+                    filename: '[name].[ext]',
+                    outputPath: '/assets/font',
+                    publicPath: '/assets/font/'
+                },
             },
             {
                 test: /\.(jpg|png|jpeg|webp|gif)$/,
-                use: [
-                    {
-                        'loader': 'url-loader',
-                        'options': {
-                            name: '[name].[ext]',
-                            outputPath: 'assets/img',
-                            limit: 3 * 1024, // 对小体积的资源图片进行管理，小图片转成base64,减少请求数量
-                            esModule: false
-                        }
+                type:"asset",
+                generator: {
+                    filename: '[name].[ext]',
+                    outputPath: '/assets/img',
+                    publicPath: '/assets/img/'
+                },
+                parser: {
+                    dataUrlCondition: {
+                        maxSize: 3 * 1024, // 对小体积的资源图片进行管理，小图片转成base64,减少请求数量
                     }
-                ]
+                },
             }
         ]
     },
