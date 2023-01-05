@@ -1,39 +1,108 @@
-const { app, BrowserWindow } = require('electron')
-const devtoolInstall = require("../extensions")
-const { devServer }  = require("../build/webpack.dev.config")
-const isProduction = process.env.NODE_ENV === "production"
-// 保持一个对于 window 对象的全局引用，如果你不这样做，
-// 当 JavaScript 对象被垃圾回收， window 会被自动地关闭
-let win
-
-// 打开主窗口
-function createWindow() {
-  // 创建浏览器窗口
-  win = new BrowserWindow({ width: 800, height: 600 })
-
-  // 加载应用的 index.html
-  // const indexPageURL = `${__dirname}/app-dist/index.html`;
-  const indexPageURL = isProduction ? 'xxx': `http://${devServer.host}:${devServer.port}`;
-  win.loadURL(indexPageURL);
-
-  // 当 window 被关闭，这个事件会被触发
-  win.on('closed', () => {
-    // 取消引用 window 对象
-    win = null
-  })
-}
-
-// Electron 会在创建浏览器窗口时调用这个函数。
-app.on('ready', async () => {
-  await devtoolInstall()
-  createWindow()
+let __create = Object.create;
+let __defProp = Object.defineProperty;
+let __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+let __getOwnPropNames = Object.getOwnPropertyNames;
+let __getProtoOf = Object.getPrototypeOf;
+let __hasOwnProp = Object.prototype.hasOwnProperty;
+let __copyProps = (to, from, except, desc) => {
+    if ((from && typeof from === "object") || typeof from === "function") {
+        for (let key of __getOwnPropNames(from))
+            if (!__hasOwnProp.call(to, key) && key !== except)
+                __defProp(to, key, {
+                    get: () => from[key],
+                    enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+                });
+    }
+    return to;
+};
+let __toESM = (mod, isNodeMode, target) => (
+    (target = mod != null ? __create(__getProtoOf(mod)) : {}),
+    __copyProps(
+        isNodeMode || !mod || !mod.__esModule
+            ? __defProp(target, "default", { value: mod, enumerable: true })
+            : target,
+        mod
+    )
+);
+let import_electron = require("electron");
+let import_node_path = __toESM(require("node:path"));
+let import_menu = require("./menu");
+let import_utils = require("./utils");
+const createWindow = (0, import_menu.attchMenuEvent)(function () {
+    const win = new import_electron.BrowserWindow({
+        width: 900,
+        height: 700,
+        titleBarStyle: "hidden",
+        webPreferences: {
+            sandbox: false,
+            devTools: true,
+            nodeIntegration: !!process.env.ELECTRON_NODE_INTEGRATION,
+            contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
+            preload: import_node_path.default.resolve(__dirname, "./preload/index.js"),
+        },
+    });
+    if (import_electron.app.isPackaged) {
+        win.loadFile("app_dist/index.html");
+    } else {
+        win.loadURL(`${process.env.VITE_DEV_SERVER_URL}/index.html`);
+    }
+    import_electron.ipcMain.on("close", () => {
+        win.close();
+    });
+    import_electron.ipcMain.on("changeWindow", (_, type) => {
+        if (type === "small") {
+            win.hide();
+            createSmallBallWindow();
+        } else {
+            createWindow();
+        }
+    });
+    return win;
 });
-
-// 当全部窗口关闭时退出
-app.on('window-all-closed', () => {
-  // 在 macOS 上，除非用户用 Cmd + Q 确定地退出
-  // 否则绝大部分应用会保持激活
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
+async function createSmallBallWindow() {
+    const winBall = new import_electron.BrowserWindow({
+        width: 100,
+        height: 100,
+        frame: false,
+        hasShadow: false,
+        transparent: true,
+        titleBarStyle: "hidden",
+        webPreferences: {
+            devTools: true,
+            nodeIntegration: !!process.env.ELECTRON_NODE_INTEGRATION,
+            contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
+            preload: import_node_path.default.resolve(__dirname, "./preload/index.js"),
+        },
+    });
+    if (import_electron.app.isPackaged) {
+        winBall.loadFile("dist-app/ball.html");
+    } else {
+        winBall.loadURL(`${process.env.VITE_DEV_SERVER_URL}/ball.html`);
+    }
+    let timeId;
+    winBall.webContents.on("did-finish-load", () => {
+        timeId = setInterval(() => {
+            winBall.webContents.send("usage", process.getCPUUsage().percentCPUUsage);
+        }, 2e3);
+    });
+    winBall.on("closed", () => {
+        clearInterval(timeId);
+    });
+}
+import_electron.app.on("ready", async () => {
+    try {
+        await (0, import_utils.installDevTools)(["vue3-devtools"]);
+    } catch (e) {
+        import_electron.dialog.showErrorBox(
+            "\u53D1\u751F\u9519\u8BEF",
+            "\u52A0\u8F7Ddevtools\u53D1\u751F\u9519\u8BEF"
+        );
+    } finally {
+        createWindow();
+    }
+});
+import_electron.app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") {
+        import_electron.app.quit();
+    }
+});
